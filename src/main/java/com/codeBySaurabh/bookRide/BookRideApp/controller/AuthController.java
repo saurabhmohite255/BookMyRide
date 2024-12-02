@@ -5,6 +5,7 @@ import com.codeBySaurabh.bookRide.BookRideApp.services.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +24,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    ResponseEntity<UserDto> signUp(@RequestBody SignUpDto signUpDto){
+    ResponseEntity<UserDto> signUp(@RequestBody @Valid SignUpDto signUpDto){
 
         return ResponseEntity.ok(authService.signup(signUpDto));
     }
     @Secured("ROLE_ADMIN")
     @PostMapping("/onboardNewDriver/{userId}")
-    public ResponseEntity<DriverDto> onboardNewDriver(@PathVariable Long userId ,@RequestBody OnboardDriverDto onboardDriverDto){
+    public ResponseEntity<DriverDto> onboardNewDriver(@PathVariable Long userId ,@RequestBody @Valid OnboardDriverDto onboardDriverDto){
         return new ResponseEntity<>(authService.onboardNewDriver(userId,
                 onboardDriverDto.getVehicleId()), HttpStatus.CREATED);
     }
